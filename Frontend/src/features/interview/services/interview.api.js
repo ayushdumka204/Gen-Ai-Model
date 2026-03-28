@@ -56,18 +56,37 @@ export const generateResumePdf = async ({ interviewReportId }) => {
   }
 }
 
-export const generateInterviewReport = async ({ jobDescription, selfDescription, resumeFile }) => {
+export const generateInterviewReport = async ({
+  jobDescription,
+  selfDescription,
+  resumeFile
+}) => {
+
   const formData = new FormData()
-  formData.append("jobDescription", jobDescription)
-  formData.append("selfDescription", selfDescription)
-  if (resumeFile) formData.append("resume", resumeFile)
+
+  // 🔥 ensure empty values na jaye
+  if (jobDescription) {
+    formData.append("jobDescription", jobDescription)
+  }
+
+  if (selfDescription) {
+    formData.append("selfDescription", selfDescription)
+  }
+
+  if (resumeFile) {
+    formData.append("resume", resumeFile)
+  }
 
   try {
-    const response = await api.post('/api/interview/', formData)
+    const response = await api.post("/api/interview/", formData)
+
     return response.data
+
   } catch (err) {
     console.error("GenerateReport API error", err)
-    const message = err?.response?.data?.message || err?.message || "Failed to generate report"
-    throw new Error(message)
+
+    throw new Error(
+      err?.response?.data?.message || "Failed to generate report"
+    )
   }
 }
