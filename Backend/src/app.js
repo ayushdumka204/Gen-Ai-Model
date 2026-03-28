@@ -1,24 +1,28 @@
-const express = require("express")
-const cookieParser = require("cookie-parser")
-const cors = require("cors")
+const express = require("express");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
-const app = express()
+const app = express(); // 🔥 FIRST create app
 
-app.use(express.json())
-app.use(cookieParser())
+// 🔥 CORS (single, clean config)
 app.use(cors({
-  origin: "*", // 🔥 temporary open
-}))
+  origin: "https://gen-ai-model.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: false
+}));
 
-/* require all the routes here */
-const authRouter = require("./routes/auth.routes")
-const interviewRouter = require("./routes/interview.routes")
+// 🔥 handle preflight (VERY IMPORTANT)
+app.options("*", cors());
 
+app.use(express.json());
+app.use(cookieParser());
 
-/* using all the routes here */
-app.use("/api/auth", authRouter)
-app.use("/api/interview", interviewRouter)
+// routes
+const authRouter = require("./routes/auth.routes");
+const interviewRouter = require("./routes/interview.routes");
 
+app.use("/api/auth", authRouter);
+app.use("/api/interview", interviewRouter);
 
-
-module.exports = app
+module.exports = app;
