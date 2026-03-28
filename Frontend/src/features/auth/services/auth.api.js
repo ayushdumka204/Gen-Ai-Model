@@ -1,8 +1,8 @@
 import axios from "axios"
 
 const api = axios.create({
-  baseURL: "https://gen-ai-model.onrender.com", // ✅ change yaha
-  withCredentials: true
+  baseURL: "https://gen-ai-model.onrender.com",
+  withCredentials: false 
 })
 
 export async function register({ username, email, password }) {
