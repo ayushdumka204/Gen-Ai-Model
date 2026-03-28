@@ -4,24 +4,30 @@ const upload = require("../middlewares/file.middleware")
 
 const interviewRouter = express.Router()
 
-/**
- * @route POST /api/interview/
- */
-interviewRouter.post("/", upload.single("resume"), interviewController.generateInterViewReportController)
+// 🔥 DEBUG (optional)
+console.log("Controller:", interviewController.generateInterViewReportController)
+console.log("Upload:", upload)
 
-/**
- * @route GET /api/interview/report/:interviewId
- */
-interviewRouter.get("/report/:interviewId", interviewController.getInterviewReportByIdController)
+// ROUTES
+interviewRouter.post(
+  "/",
+  upload.single("resume"),
+  interviewController.generateInterViewReportController
+)
 
-/**
- * @route GET /api/interview/
- */
-interviewRouter.get("/", interviewController.getAllInterviewReportsController)
+interviewRouter.get(
+  "/report/:interviewId",
+  interviewController.getInterviewReportByIdController
+)
 
-/**
- * @route POST /api/interview/resume/pdf/:interviewReportId
- */
-interviewRouter.post("/resume/pdf/:interviewReportId", interviewController.generateResumePdfController)
+interviewRouter.get(
+  "/",
+  interviewController.getAllInterviewReportsController
+)
+
+interviewRouter.post(
+  "/resume/pdf/:interviewReportId",
+  interviewController.generateResumePdfController
+)
 
 module.exports = interviewRouter
