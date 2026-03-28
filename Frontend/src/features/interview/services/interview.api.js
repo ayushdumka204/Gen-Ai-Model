@@ -1,7 +1,6 @@
-import axios from "axios"
-
+import axios from "axios" 
 const api = axios.create({
-  baseURL: "https://gen-ai-model.onrender.com", // ✅ change yaha
+  baseURL: "https://gen-ai-model.onrender.com", 
   withCredentials: true
 })
 
