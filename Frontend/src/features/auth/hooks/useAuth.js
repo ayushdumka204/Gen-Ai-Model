@@ -1,80 +1,78 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../auth.context";
-import { login, register, logout, getMe } from "../services/auth.api";
-
-
+import { login, register, logout } from "../services/auth.api";
 
 export const useAuth = () => {
 
     const context = useContext(AuthContext)
     const { user, setUser, loading, setLoading } = context
 
-
+    // 🔥 LOGIN (direct working)
     const handleLogin = async ({ email, password }) => {
-        setLoading(true)
         try {
-            const data = await login({ email, password })
-            if (!data || !data.user) {
-                throw new Error("Login failed: no user returned")
-            }
-            setUser(data.user)
+            setLoading(true)
+
+            const res = await login({ email, password })
+
+            // 🔥 directly set user (no checks)
+            setUser(res.user)
+
             return { success: true }
+
         } catch (err) {
-            console.error("handleLogin failed", err)
-            return { success: false, message: err?.message || "Unable to login." }
+            console.log("Login error:", err)
+
+            return { success: false }
         } finally {
             setLoading(false)
         }
     }
 
+    // 🔥 REGISTER (direct working)
     const handleRegister = async ({ username, email, password }) => {
-        setLoading(true)
         try {
-            const data = await register({ username, email, password })
-            if (!data || !data.user) {
-                throw new Error("Register failed: no user returned")
-            }
-            setUser(data.user)
+            setLoading(true)
+
+            const res = await register({ username, email, password })
+
+            setUser(res.user)
+
             return { success: true }
+
         } catch (err) {
-            console.error("handleRegister failed", err)
-            return { success: false, message: err?.message || "Unable to register." }
+            console.log("Register error:", err)
+
+            return { success: false }
         } finally {
             setLoading(false)
         }
     }
 
+    // 🔥 LOGOUT
     const handleLogout = async () => {
-        setLoading(true)
         try {
+            setLoading(true)
+
             await logout()
+
             setUser(null)
+
         } catch (err) {
-            console.error("handleLogout failed", err)
+            console.log("Logout error:", err)
         } finally {
             setLoading(false)
         }
     }
 
-    useEffect(() => {
+    // ❌ NO getMe
+    // ❌ NO useEffect
+    // ❌ NO AUTO CALL
 
-        const getAndSetUser = async () => {
-            try {
-                const data = await getMe()
-                if (data?.user) {
-                    setUser(data.user)
-                }
-            } catch (err) {
-                console.error("getMe failed", err)
-            } finally {
-                setLoading(false)
-            }
-        }
-
-        getAndSetUser()
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    return { user, loading, handleRegister, handleLogin, handleLogout }
+    return {
+        user,
+        loading,
+        handleLogin,
+        handleRegister,
+        handleLogout
+    }
 }
