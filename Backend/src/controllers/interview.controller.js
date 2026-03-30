@@ -103,11 +103,12 @@ async function getInterviewReportByIdController(req, res) {
             interviewReport
         })
 
-    } catch (error) {
-        console.error("getInterviewReportByIdController error:", error)
+        } catch (error) {
+        console.error("🔥 ERROR FULL:", error)
+        console.error("🔥 STACK:", error.stack)
 
         return res.status(500).json({
-            message: "Internal server error"
+            message: error.message || "Internal server error"
         })
     }
 }
