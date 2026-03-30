@@ -41,17 +41,17 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
                         Job Description: ${jobDescription}
 `
 
-    const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: prompt,
-        config: {
-            responseMimeType: "application/json",
-            responseSchema: zodToJsonSchema(interviewReportSchema),
-        }
-    })
+const response = await ai.models.generateContent({
+    model: "gemini-3-flash-preview",
+    contents: prompt,
+    config: {
+        responseMimeType: "application/json",
+        responseSchema: zodToJsonSchema(interviewReportSchema),
+    }
+})
 
-    const text = response.text()
-    return JSON.parse(text)
+const text = await response.text() // ✅ FIX
+return JSON.parse(text)
 
 
 }
