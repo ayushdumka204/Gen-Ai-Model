@@ -33,7 +33,7 @@ async function generateInterViewReportController(req, res) {
         // ✅ PDF PARSE
         if (req.file) {
             try {
-                const parsed = await pdfParse(req.file.buffer)
+                const parsed = await pdfParse(Buffer.from(req.file.buffer))
                 resumeText = parsed.text || ""
             } catch (err) {
                 console.error("PDF parse error:", err)
