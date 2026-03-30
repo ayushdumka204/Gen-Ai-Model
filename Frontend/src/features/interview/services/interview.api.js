@@ -64,15 +64,15 @@ export const generateInterviewReport = async ({
 
   const formData = new FormData()
 
-  // 🔥 ensure empty values na jaye
-  if (jobDescription) {
-    formData.append("jobDescription", jobDescription)
-  }
+  // 🔥 ALWAYS SEND (IMPORTANT)
+  formData.append("jobDescription", jobDescription?.trim() || "default job")
 
-  if (selfDescription) {
-    formData.append("selfDescription", selfDescription)
-  }
+  formData.append(
+    "selfDescription",
+    selfDescription?.trim() || jobDescription?.trim() || "default"
+  )
 
+  // 🔥 FILE LAST
   if (resumeFile) {
     formData.append("resume", resumeFile)
   }
