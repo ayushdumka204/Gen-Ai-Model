@@ -32,28 +32,40 @@ const [error, setError] = useState(null)
   }, [])
 
 const handleGenerate = async () => {
-    if (!file || !jobDescription) {
-      setError('Please fill job description and select resume.')
-      return
-    }
-    setUploading(true)
-    setError(null)
-    try {
-    await generateInterviewReport({ 
+  if (!file || !jobDescription) {
+    setError('Please fill job description and select resume.')
+    return
+  }
+
+  setUploading(true)
+  setError(null)
+
+  try {
+    const res = await generateInterviewReport({ 
       jobDescription: jobDescription.trim(),
       selfDescription: jobDescription.trim(),
       resumeFile: file 
     })
+
+    console.log("API RESPONSE:", res) // 🔥 DEBUG
+
+    // ✅ FIX HERE
+    if (res?.success) {
+      alert("Report generated ✅")
       refetch()
       setFile(null)
       setJobDescription('')
-      alert('Interview report generated! Check reports.')
-    } catch (err) {
-      setError(err.message)
+    } else {
+      setError("Failed to generate report ❌")
     }
-    setUploading(false)
+
+  } catch (err) {
+    console.log(err)
+    setError(err.message || "Something went wrong")
   }
 
+  setUploading(false)
+}
   return (
     <div className="container">
       <h1 className="page-title">Geni AI Dashboard</h1>
