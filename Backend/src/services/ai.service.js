@@ -50,8 +50,24 @@ const response = await ai.models.generateContent({
     }
 })
 
-const text = await response.text() // ✅ FIX
-return JSON.parse(text)
+const text = await response.text()
+
+console.log("RAW AI TEXT:", text) // 🔥 DEBUG
+
+if (!text || text.trim() === "") {
+    throw new Error("AI returned empty response ❌")
+}
+
+let parsed
+
+try {
+    parsed = JSON.parse(text)
+} catch (err) {
+    console.error("INVALID JSON:", text)
+    throw new Error("AI returned invalid JSON ❌")
+}
+
+return parsed
 
 
 }
