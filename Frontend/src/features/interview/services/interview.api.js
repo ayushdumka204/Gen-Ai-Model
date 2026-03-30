@@ -78,7 +78,7 @@ export const generateInterviewReport = async ({
   }
 
   try {
-    const response = await api.post("/api/interview/", formData)
+    const response = await api.post("/api/interview", formData)
 
     return response.data
 
