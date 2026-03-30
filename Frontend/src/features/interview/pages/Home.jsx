@@ -39,11 +39,11 @@ const handleGenerate = async () => {
     setUploading(true)
     setError(null)
     try {
-      await generateInterviewReport({ 
-        jobDescription, 
-        selfDescription: '', 
-        resumeFile: file 
-      })
+    await generateInterviewReport({ 
+      jobDescription: jobDescription.trim(),
+      selfDescription: jobDescription.trim(),
+      resumeFile: file 
+    })
       refetch()
       setFile(null)
       setJobDescription('')
