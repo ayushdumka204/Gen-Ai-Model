@@ -28,20 +28,24 @@ async function generateInterViewReportController(req, res) {
             })
         }
 
-        let resumeText = ""
+            let resumeText = ""
 
-        // ✅ PDF PARSE
-        if (req.file) {
-            try {
-                const parsed = await pdfParse(Buffer.from(req.file.buffer))
-                resumeText = parsed.text || ""
-            } catch (err) {
-                console.error("PDF parse error:", err)
-                return res.status(400).json({
-                    message: "Invalid PDF file ❌"
-                })
+            if (req.file) {
+                try {
+                    // ❌ REMOVE pdfParse
+                    // const parsed = await pdfParse(req.file.buffer)
+                    // resumeText = parsed.text || ""
+
+                    // ✅ TEMP FIX
+                    resumeText = "Resume uploaded successfully"
+
+                } catch (err) {
+                    console.error('PDF parse error:', err)
+                    return res.status(400).json({
+                        message: 'Invalid PDF file ❌'
+                    })
+                }
             }
-        }
 
         // ✅ AI CALL
         const interViewReportByAi = await generateInterviewReport({
